@@ -19,20 +19,30 @@ function operate(operator, a, b) {
     switch(operator) {
         case '+':
             return add(a, b);
-            break;
         case '-':
             return subtract(a, b);
-            break;
         case '*':
             return multiply(a, b);
-            break;
         case '/':
             return divide(a, b);
-            break;
     }
+}
+
+function updateDisplay(value) {
+    display.textContent += value;
 }
 
 let a;
 let operator;
 let b;
+
+const display = document.querySelector('.display');
+
+const buttons = document.querySelectorAll('.btn');
+
+buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        updateDisplay(button.textContent);
+    });
+})
 
