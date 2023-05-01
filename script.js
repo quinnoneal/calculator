@@ -35,16 +35,12 @@ function updateDisplay(value) {
 function isOperator(value) {
     switch(value) {
         case '+':
-            operator = '+';
             return true;
         case '-':
-            operator = '-';
             return true;
         case '*':
-            operator = '*';
             return true;
         case '/':
-            operator = '/';
             return true;
         default:
             return false;
@@ -55,7 +51,7 @@ function clearDisplay() {
     display.textContent = '';
     a = 0;
     b = 0;
-    operator = null;
+    operator = undefined;
 }
 
 let a;
@@ -71,15 +67,24 @@ buttons.forEach((button) => {
         let buttonPressed = button.textContent;
         // check if user clicked operator, if so, if operator variable != null, operate, then show sum plus operator pressed.
         if(isOperator(buttonPressed)) {
+            // check if operator already exists
+            if(operator == undefined) {
             // add space before and after operator for better look and to split elements when = is pressed.
             display.textContent += ' ';
             updateDisplay(buttonPressed);
             display.textContent += ' ';
+            operator = buttonPressed;
+            // if operator exists, operate with current elements
+            } else {
+                display.textContent = operate(operator, a, b);
+                display.textContent += ' ';
+                updateDisplay(buttonPressed);
+                display.textContent += ' ';    
+            }
         } else if(buttonPressed === '=') {
             // get second operand
             // reset operator variable
             let splitEquation = display.textContent.split(' ');
-            operator = splitEquation[1];
             a = splitEquation[0];
             b = splitEquation[2];
             display.textContent = operate(operator, a, b);
