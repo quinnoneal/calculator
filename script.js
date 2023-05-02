@@ -35,16 +35,12 @@ function updateDisplay(value) {
 function isOperator(value) {
     switch(value) {
         case '+':
-            operator = '+';
             return true;
         case '-':
-            operator = '-';
             return true;
         case '*':
-            operator = '*';
             return true;
         case '/':
-            operator = '/';
             return true;
         default:
             return false;
@@ -72,22 +68,33 @@ buttons.forEach((button) => {
         // check if user clicked operator, if so, if operator variable != null, operate, then show sum plus operator pressed.
         if(isOperator(buttonPressed)) {
             // check if operator already exists
-            if(b == undefined) {
-            // add space before and after operator for better look and to split elements when = is pressed.
-            display.textContent += ' ';
-            updateDisplay(buttonPressed);
-            display.textContent += ' ';
-            // if operator exists, operate with current elements
-            } else {
+            if(operator === undefined) {
+                // add space before and after operator for better look and to split elements when = is pressed.
+                operator = buttonPressed;
+                display.textContent += ' ';
+                updateDisplay(buttonPressed);
+                display.textContent += ' ';
+            // if operator exists and there is second operand, operate with current elements
+            } else if(display.textContent.charAt(display.textContent.length - 1) !== ' ') {
+                let splitEquation = display.textContent.split(' ');
+                operator = splitEquation[1];
+                a = splitEquation[0];
+                b = splitEquation[2];    
                 display.textContent = operate(operator, a, b);
                 display.textContent += ' ';
                 updateDisplay(buttonPressed);
                 display.textContent += ' ';    
+            } else {
+                console.log(operator)
+                console.log(display.textContent)
+                display.textContent = display.textContent.replace(operator, buttonPressed);
+                operator = buttonPressed;
             }
         } else if(buttonPressed === '=') {
             // get second operand
             // reset operator variable
             let splitEquation = display.textContent.split(' ');
+            operator = splitEquation[1];
             a = splitEquation[0];
             b = splitEquation[2];
             display.textContent = operate(operator, a, b);
